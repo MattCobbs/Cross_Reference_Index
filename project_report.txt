@@ -1,0 +1,60 @@
+Matt Cobbs
+CS362
+Project Report
+3/18/2019
+Assignment 2
+	For assignment 2 we were tasked with using a binary search tree (bst) to create a cross-reference index for a text file.  
+The requirements for the assignment could be split into four subcategories: 
+	1.	Content of text file
+	2.	Definition of a word
+	3.	Characteristics of the cross-reference index
+	4.	Tree and Node requirements
+
+	The first subcategory, content of a text file, explained could be expected inside the text file.  
+It explained that all letters would be lower-case, 
+that there would be digits, punctuation marks, white space, and newline control 
+characters.  It also stated that the file would be at its end when a # was found.
+	
+	The second subcategory, definition of a word, explained that a word could be any combination of letters and numbers if 
+it started with a letter.  It was also stated that punctuation marks were not part of a word, and that only the first 
+ten characters of a word mattered.  For the purpose of the index the word would be cut off at ten characters and at 
+that point anything that was the same would be grouped together.
+	
+	The third subcategory, characteristics of the cross-reference index, explained that the words would be in alphabetical 
+order and that the line numbers that the words occurred on would be lined up and evenly spaced.
+	
+	The final subcategory, Tree and Node requirements, explained guidelines that our bst should be structured around.  The
+tree would need to be a binary search tree.  The nodes for the binary search tree would need to hold a string variable to 
+hold the word that the node represented, and it would also need to hold the head of a list of integers that would hold the 
+line numbers.
+	
+	I decided to use C++ for this assignment.  The project will compile and run with the “make run” command on vim.  I also 
+included a “make valgrind” command to check for memory leaks and a “make clean” command to remove all unnecessary files.  
+All of these are in a makefile file that will be submitted with the source code.  
+	
+	As I started planning out the assignment, I realized the first task that I needed to accomplish was to create a bst data 
+structure.  I accomplished this by creating a node class and a bstree class.  My node class had the basic left and right node 
+pointers and for its data members I gave it a string variable and an int vector variable.  Based off the description of the 
+assignment I rationalized that a vector would meet the requirements for “the head of a list”.  I based this off the fact that 
+std::vector automatically allocates and deallocates the memory needed for the information that it contains, and thus is a head 
+pointer to the rest of the vector.  From my understanding the only real difference between vector and a link list is that a 
+vector keeps its memory stored sequentially instead of having pointers to different areas of memory like link lists.
+	
+	For my bstree class there was not much to change or add from a normal bst class.  The printTree method used recursive 
+function calls to start from the min value and then traverse the tree in ascending order.  The main difference is I added a 
+std::ofstream address variable so that the printTree method could use the output file stream and create a text file.  I also 
+added a function that was not part of the bstree class that allowed the bstree to compare the first ten characters of a word to 
+the first ten characters of another word.  This would be one of the areas that I could improve my code in, I created this function 
+before I wrote my main.  Because of this I am comparing the first 10 characters in a word in this function and then in the main 
+function I am going back through and cutting off anything past 10 characters.  It would be more efficient to all of this in the 
+compareWords function.
+	
+	The main function is the next area that I could make my code more efficient.  Besides being able to encapsulate areas of the 
+main function better, I had a tough time trying to figure out a more efficient way to check a vector.  The vector in question, 
+starting on line 74 of main.cpp, was holding the strings from the current getline, so that they could be checked for digits 
+and white space.  I ended up using an if statement and ten else if statements to solve this problem, which I feel is inefficient.  
+Also, earlier in main.cpp , at line 56, rather than adding multiple std::replace functions I only checked the file for white 
+space and periods.  I dealt with commas later in the file but I still left out multiple punctuation marks that could possibly be 
+found in other files that are not the test text.
+	
+	
